@@ -1,0 +1,434 @@
+{
+  // Full reference: https://aka.ms/tsconfig
+  // ✅ = Recommended ON | ❌ = Usually OFF | ⚠️ = Situational
+
+  "compilerOptions": {
+
+    // ─────────────────────────────────────────────
+    // FILE LAYOUT
+    // ─────────────────────────────────────────────
+
+    // "rootDir": "./src",             // ✅ Root folder of your .ts source files
+    // "outDir": "./dist",             // ✅ Where compiled .js files go
+    // "rootDirs": ["./src", "./generated"], // ⚠️ Multiple root folders merged into one virtual root (monorepos, codegen)
+    // "outFile": "./dist/bundle.js",        // ❌ Only for AMD/SystemJS — bundles all output into one file. Not for CommonJS/ESM
+    // "declarationDir": "./types",          // ⚠️ Separate folder for .d.ts files (useful for libraries)
+
+
+    // ─────────────────────────────────────────────
+    // MODULE SYSTEM
+    // ─────────────────────────────────────────────
+
+    "module": "NodeNext",
+    // What module system the output uses.
+    // CommonJS   → require/module.exports (old Node.js)
+    // ESNext     → import/export (modern ESM, bundlers)
+    // NodeNext   → ✅ correct for modern Node.js with ESM support
+    // Node16     → same as NodeNext but pinned to Node 16 behavior
+    // Preserve   → keeps whatever you wrote as-is (new in TS 5.4)
+    // AMD/UMD/System → legacy, avoid
+
+    "moduleResolution": "NodeNext",
+    // How TypeScript finds imported modules.
+    // node       → old Node.js style (no .js extensions needed)
+    // NodeNext   → ✅ modern Node — requires .js extensions in imports
+    // Bundler    → for Vite/Webpack/esbuild — no extensions needed, supports package.json exports
+    // Classic    → legacy TypeScript style, avoid
+
+    "target": "ES2022",
+    // JavaScript version to compile output to.
+    // ES3 / ES5     → very old browsers
+    // ES2015–ES2022 → progressively more modern
+    // ESNext        → always latest (can be unstable, prefer a pinned year)
+    // ✅ ES2022 is safe for Node 18+ and modern browsers
+
+    // "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    // What built-in APIs TypeScript knows about.
+    // ES2022         → JS standard library (Promise, Map, etc.)
+    // DOM            → browser APIs (document, window, fetch)
+    // DOM.Iterable   → makes DOM collections iterable
+    // WebWorker      → Web Worker APIs
+    // ✅ If not set, TypeScript infers from `target`
+
+    "types": [],
+    // Which @types/* packages to auto-include globally.
+    // []             → include nothing automatically (cleanest, explicit)
+    // ["node"]       → include @types/node for Node.js globals
+    // ["jest"]       → include @types/jest
+    // ✅ Prefer explicit. Leave [] unless you need global types.
+
+    // "typeRoots": ["./node_modules/@types", "./src/types"],
+    // ⚠️ Where to look for @types packages.
+    // Default is node_modules/@types. Override only if you have custom type folders.
+
+    // "baseUrl": "./src",
+    // ⚠️ Base directory for non-relative imports. Required when using `paths`.
+
+    // "paths": {
+    //   "@utils/*": ["utils/*"],
+    //   "@models/*": ["models/*"]
+    // },
+    // ⚠️ Import aliases. Needs `baseUrl`. Note: paths are NOT rewritten in output —
+    // you need a bundler or tsconfig-paths at runtime to resolve them.
+
+
+    // ─────────────────────────────────────────────
+    // INTEROP & COMPATIBILITY
+    // ─────────────────────────────────────────────
+
+    "esModuleInterop": true,
+    // ✅ Allows `import express from 'express'` style for CommonJS modules.
+    // Also enables allowSyntheticDefaultImports automatically.
+
+    "allowSyntheticDefaultImports": true,
+    // ✅ Allows default imports from modules without a default export.
+    // Auto-enabled by esModuleInterop. Explicit here for clarity.
+
+    "verbatimModuleSyntax": true,
+    // ✅ Enforces that `import type` is used for type-only imports.
+    // Prevents accidental runtime imports of type-only things.
+    // Replaces older `importsNotUsedAsValues` and `preserveValueImports`.
+
+    "isolatedModules": true,
+    // ✅ Ensures each file is independently transpilable.
+    // Required for Babel, esbuild, SWC, Vite. Also required by NodeNext.
+    // Errors on const enums and namespace re-exports.
+
+    // "allowJs": false,
+    // ❌ Allow .js files in your TS project. Turn ON only when migrating JS → TS gradually.
+
+    // "checkJs": false,
+    // ❌ Type-check .js files too. Only useful with allowJs.
+
+    // "maxNodeModuleJsDepth": 0,
+    // ❌ How deep into node_modules to check JS files. Rarely needed.
+
+    "resolveJsonModule": true,
+    // ✅ Allows `import data from './config.json'`. TypeScript infers the type from the JSON.
+
+    "forceConsistentCasingInFileNames": true,
+    // ✅ Error on wrong-cased imports. Prevents Windows (case-insensitive) vs Linux (case-sensitive) bugs.
+
+    // "allowArbitraryExtensions": false,
+    // ⚠️ Allows importing non-JS/TS files (.css, .svg) if a .d.ts is provided for them.
+
+    // "allowImportingTsExtensions": false,
+    // ⚠️ Allows `import './foo.ts'` with .ts extension. Only valid when noEmit or emitDeclarationOnly is set.
+
+    // "customConditions": [],
+    // ⚠️ Add custom conditions to package.json exports/imports resolution. Advanced use only.
+
+    // "noUncheckedSideEffectImports": true,
+    // ✅ Errors on `import './foo'` where the file has no type-checkable exports.
+    // Prevents silent side-effect imports of non-existent or unresolved files.
+
+
+    // ─────────────────────────────────────────────
+    // MODULE DETECTION
+    // ─────────────────────────────────────────────
+
+    "moduleDetection": "force",
+    // How TypeScript decides if a file is a module or a script.
+    // auto   → uses import/export presence to decide
+    // legacy → old behavior
+    // force  → ✅ treats every file as a module regardless. Avoids global scope pollution.
+
+
+    // ─────────────────────────────────────────────
+    // OUTPUT FILES
+    // ─────────────────────────────────────────────
+
+    "sourceMap": true,
+    // ✅ Generates .js.map files. Lets you debug original TypeScript in devtools/Node debugger.
+
+    "declaration": true,
+    // ✅ Generates .d.ts type declaration files. Required if publishing a library.
+
+    "declarationMap": true,
+    // ✅ Generates .d.ts.map files. Makes "Go to Definition" in IDEs jump to original .ts source.
+
+    // "inlineSourceMap": false,
+    // ❌ Embeds source map inside the .js file instead of a separate .map file.
+    // Cannot use both sourceMap and inlineSourceMap together.
+
+    // "inlineSources": false,
+    // ⚠️ Embeds original .ts source text inside the source map. Useful for distributed libraries.
+
+    // "removeComments": false,
+    // ⚠️ Strips comments from output JS. Good for production builds, bad for readability.
+
+    "noEmit": false,
+    // Set to true if your bundler (Vite, esbuild) handles output and you want TS only for type-checking.
+    // ⚠️ Mutually exclusive with declaration/outDir outputs.
+
+    // "noEmitOnError": true,
+    // ✅ Don't emit output files if there are any type errors. Good for CI.
+
+    // "emitDeclarationOnly": false,
+    // ⚠️ Only emit .d.ts files, no .js. Useful when bundler handles JS but you still want types.
+
+    // "emitBOM": false,
+    // ❌ Add UTF-8 BOM to output files. Almost never needed.
+
+    // "newLine": "lf",
+    // ⚠️ Force line ending style in output: "lf" | "crlf". Good for cross-platform teams.
+
+    // "stripInternal": false,
+    // ⚠️ Omit declarations marked with @internal JSDoc tag from .d.ts output.
+
+    // "preserveConstEnums": false,
+    // ⚠️ Keeps const enum declarations in output even when inlined. Rarely needed.
+
+
+    // ─────────────────────────────────────────────
+    // STRICT TYPE CHECKING (Master Switch)
+    // ─────────────────────────────────────────────
+
+    "strict": true,
+    // ✅ ALWAYS enable. Turns on all strict checks below as a group:
+    // - strictNullChecks
+    // - strictFunctionTypes
+    // - strictBindCallApply
+    // - strictPropertyInitialization
+    // - noImplicitAny
+    // - noImplicitThis
+    // - alwaysStrict
+    // - useUnknownInCatchVariables (TS 4.4+)
+
+    // Individual strict flags (all enabled by `strict: true` above):
+
+    // "strictNullChecks": true,
+    // null and undefined are NOT assignable to other types unless explicitly declared.
+    // let x: string = null → error. Must write string | null.
+
+    // "strictFunctionTypes": true,
+    // Stricter checking of function parameter types (contravariance).
+    // Catches incorrect callback signatures.
+
+    // "strictBindCallApply": true,
+    // Type-checks .bind(), .call(), .apply() correctly instead of allowing `any`.
+
+    // "strictPropertyInitialization": true,
+    // Class properties must be initialized in constructor or marked optional.
+
+    // "noImplicitAny": true,
+    // Error when TypeScript infers `any` because no type annotation given.
+    // function foo(x) {} → error. Must write foo(x: string).
+
+    // "noImplicitThis": true,
+    // Error when `this` has implicit `any` type inside functions.
+
+    // "alwaysStrict": true,
+    // Emits "use strict" in every output file.
+
+    // "useUnknownInCatchVariables": true,
+    // catch (e) → e is `unknown` instead of `any`. Forces you to check instanceof Error.
+
+
+    // ─────────────────────────────────────────────
+    // EXTRA STRICT (Beyond `strict: true`)
+    // ─────────────────────────────────────────────
+
+    "noUncheckedIndexedAccess": true,
+    // ✅ arr[0] returns T | undefined instead of T.
+    // Makes array/object index access safe. Catches off-by-one and missing-key bugs.
+
+    "exactOptionalPropertyTypes": true,
+    // ✅ Optional properties can't be explicitly set to undefined.
+    // { name?: string } means name can be absent, but obj.name = undefined → error.
+    // More precise than just making properties nullable.
+
+
+    // ─────────────────────────────────────────────
+    // STYLE / CODE QUALITY
+    // ─────────────────────────────────────────────
+
+    "noImplicitReturns": true,
+    // ✅ Functions must explicitly return a value on all code paths.
+    // Prevents accidentally returning undefined in some branches.
+
+    "noImplicitOverride": true,
+    // ✅ Methods that override a parent class method must use the `override` keyword.
+    // Prevents accidental overrides when parent class changes.
+
+    "noUnusedLocals": true,
+    // ✅ Error on declared local variables that are never used. Keeps code clean.
+    // Prefix with _ to intentionally suppress: let _unused = ...
+
+    "noUnusedParameters": true,
+    // ✅ Error on function parameters that are never used.
+    // Prefix with _ to suppress: function foo(_ignored: string) {}
+
+    "noFallthroughCasesInSwitch": true,
+    // ✅ Error if a switch case falls through to the next without break/return.
+
+    "noPropertyAccessFromIndexSignature": true,
+    // ✅ Forces bracket notation for index signature access.
+    // If type is { [key: string]: string }, must use obj["key"] not obj.key.
+    // Makes dynamic vs known properties explicit.
+
+
+    // ─────────────────────────────────────────────
+    // JSX (React / Preact / Solid etc.)
+    // ─────────────────────────────────────────────
+
+    "jsx": "react-jsx",
+    // How to transform JSX.
+    // preserve        → leave JSX as-is for bundler to handle
+    // react           → React.createElement() — old React 16 style (needs React in scope)
+    // react-jsx       → ✅ new JSX transform (React 17+) — no need to import React
+    // react-jsxdev    → same as react-jsx but with dev runtime (better errors)
+    // react-native    → preserve but with .native.tsx extension logic
+
+    // "jsxImportSource": "react",
+    // ⚠️ The package used for the new JSX transform. Default is "react".
+    // Change to "preact/compat" for Preact, "solid-js/h" for Solid etc.
+
+    // "jsxFactory": "React.createElement",
+    // ❌ Old JSX transform factory. Only for jsx: "react" mode.
+
+    // "jsxFragmentFactory": "React.Fragment",
+    // ❌ Fragment factory for old JSX transform.
+
+
+    // ─────────────────────────────────────────────
+    // DECORATORS (NestJS / Angular / TypeORM)
+    // ─────────────────────────────────────────────
+
+    // "experimentalDecorators": true,
+    // ⚠️ Enables @Decorator syntax. Required for NestJS, Angular, TypeORM.
+    // Note: TC39 decorators (stage 3) are different — TS 5.0+ supports them without this flag.
+
+    // "emitDecoratorMetadata": true,
+    // ⚠️ Emits type metadata for decorators. Required for NestJS/TypeORM DI to work.
+    // Needs `reflect-metadata` package installed and imported.
+
+
+    // ─────────────────────────────────────────────
+    // INCREMENTAL / BUILD PERFORMANCE
+    // ─────────────────────────────────────────────
+
+    // "incremental": true,
+    // ⚠️ Saves .tsbuildinfo file and recompiles only changed files. Speeds up watch mode.
+
+    // "tsBuildInfoFile": "./.tsbuildinfo",
+    // ⚠️ Where to save the incremental build info file.
+
+    // "composite": true,
+    // ⚠️ Enables TypeScript project references. Used in monorepos.
+    // Required when other tsconfig files `reference` this project.
+    // Implies declaration: true and incremental: true.
+
+    // "disableSourceOfProjectReferenceRedirect": false,
+    // ⚠️ In project references, use .d.ts files instead of source .ts files.
+    // Speeds up type checking in large monorepos.
+
+    // "disableSolutionSearching": false,
+    // ⚠️ Opt project out of multi-project reference searching. Performance optimization.
+
+
+    // ─────────────────────────────────────────────
+    // DIAGNOSTICS & REPORTING
+    // ─────────────────────────────────────────────
+
+    // "noErrorTruncation": false,
+    // ⚠️ Show full type names in errors without truncation. Useful for deeply nested generics.
+
+    // "diagnostics": false,
+    // ⚠️ Print compiler performance diagnostic info.
+
+    // "extendedDiagnostics": false,
+    // ⚠️ More detailed performance diagnostics. Use when debugging slow compilation.
+
+    // "listFiles": false,
+    // ⚠️ Print all files TypeScript includes in compilation. Debug include/exclude issues.
+
+    // "listEmittedFiles": false,
+    // ⚠️ Print all files TypeScript emits.
+
+    // "traceResolution": false,
+    // ⚠️ Trace how TypeScript resolves each import. Debug module resolution issues.
+
+    // "explainFiles": false,
+    // ⚠️ Explain why each file was included in compilation. Very verbose.
+
+
+    // ─────────────────────────────────────────────
+    // LEGACY / RARELY USED
+    // ─────────────────────────────────────────────
+
+    "skipLibCheck": true,
+    // ✅ Skip type checking of all .d.ts files (including node_modules).
+    // Speeds up compilation. Avoids errors from third-party types you can't fix.
+
+    // "skipDefaultLibCheck": false,
+    // ⚠️ Only skip checking TypeScript's own built-in .d.ts files. Narrower than skipLibCheck.
+
+    // "noResolve": false,
+    // ❌ Don't add files from imports/references to compilation. Almost never useful.
+
+    // "noLib": false,
+    // ❌ Don't include TypeScript's default lib (lib.d.ts). Only if providing completely custom types.
+
+    // "noStrictGenericChecks": false,
+    // ❌ Disables strict checking of generic function types. Never use this.
+
+    // "suppressExcessPropertyErrors": false,
+    // ❌ Disables excess property checking on object literals. Never use this.
+
+    // "suppressImplicitAnyIndexErrors": false,
+    // ❌ Suppresses noImplicitAny for index signatures. Never use this.
+
+    // "charset": "utf8",
+    // ❌ Deprecated. UTF-8 is always used now.
+
+    // "keyofStringsOnly": false,
+    // ❌ Deprecated. Makes keyof only return string. Never use this.
+
+    // "noImplicitUseStrict": false,
+    // ❌ Deprecated. Disables automatic use strict emission. Never use this.
+
+  },
+
+
+  // ─────────────────────────────────────────────
+  // FILE INCLUSION
+  // ─────────────────────────────────────────────
+
+  // "include": [
+  //   "src/**/*"              // All .ts/.tsx files inside src folder
+  // ],
+
+  "exclude": [
+    "node_modules",         // Always exclude. TypeScript skips this by default anyway.
+    "dist",                 // Don't re-compile output
+    "**/*.spec.ts",         // ⚠️ Exclude test files from production build (use separate tsconfig.test.json)
+    "**/*.test.ts"
+  ],
+
+  // "files": ["src/index.ts"],
+  // ⚠️ Explicit list of files to include. Use instead of `include` for small projects.
+  // If both `files` and `include` are absent, TypeScript includes everything.
+
+
+  // ─────────────────────────────────────────────
+  // PROJECT REFERENCES (Monorepos)
+  // ─────────────────────────────────────────────
+
+  // "references": [
+  //   { "path": "../common" },
+  //   { "path": "../shared-types" }
+  // ]
+  // ⚠️ Declare dependencies on other TypeScript projects.
+  // Referenced projects must have composite: true.
+
+
+  // ─────────────────────────────────────────────
+  // EXTENDS (Config Inheritance)
+  // ─────────────────────────────────────────────
+
+  // "extends": "./tsconfig.base.json"
+  // ⚠️ Inherit settings from another config file. Common in monorepos.
+  // Can also extend published configs: "@tsconfig/node20/tsconfig.json"
+
+}
