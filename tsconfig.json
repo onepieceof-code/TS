@@ -8,8 +8,8 @@
     // FILE LAYOUT
     // ─────────────────────────────────────────────
 
-    // "rootDir": "./src",             // ✅ Root folder of your .ts source files
-    // "outDir": "./dist",             // ✅ Where compiled .js files go
+    "rootDir": "./src",              // ✅ Root folder of your .ts source files
+    "outDir": "./dist",              // ✅ Where compiled .js files go
     // "rootDirs": ["./src", "./generated"], // ⚠️ Multiple root folders merged into one virtual root (monorepos, codegen)
     // "outFile": "./dist/bundle.js",        // ❌ Only for AMD/SystemJS — bundles all output into one file. Not for CommonJS/ESM
     // "declarationDir": "./types",          // ⚠️ Separate folder for .d.ts files (useful for libraries)
@@ -395,9 +395,9 @@
   // FILE INCLUSION
   // ─────────────────────────────────────────────
 
-  // "include": [
-  //   "src/**/*"              // All .ts/.tsx files inside src folder
-  // ],
+  "include": [
+    "src/**/*"
+  ],
 
   "exclude": [
     "node_modules",         // Always exclude. TypeScript skips this by default anyway.
